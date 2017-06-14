@@ -18,28 +18,46 @@ import java.util.Set;
 
 /**
  * Created by chen on 2017/6/14.
- * 进行爬取的主要函数
+ * 进行爬取的主要类
  */
 public class SpliderCore {
     private HttpClient httpClient;//爬取的客户端
     private String encoding;//解析时的编码
 
-
+    /**
+     * 爬取构造
+     */
     public SpliderCore() {
         httpClient = new DefaultHttpClient();
         encoding = "utf-8";
     }
 
+    /**
+     * 爬取构造
+     * @param encoding 编码
+     */
     public SpliderCore(String encoding) {
         httpClient = new DefaultHttpClient();
         this.encoding = encoding;
     }
 
+    /**
+     * 爬取构造
+     * @param httpClient 客户端
+     * @param encoding 编码
+     */
     public SpliderCore(HttpClient httpClient, String encoding) {
         this.httpClient = httpClient;
         this.encoding = encoding;
     }
 
+    /**
+     * 以get凡是进行爬取
+     * @param url 爬取的链接
+     * @return 爬取的String类型结果
+     * @throws NetStateNotOKException response的状态码不是ok时的异常
+     * @throws GetReponseObjExceoption 获取response失败
+     */
     public String doGet(String url) throws NetStateNotOKException, GetReponseObjExceoption {
         return doGet(url, null);
     }
@@ -84,12 +102,18 @@ public class SpliderCore {
     }
 
 
-
-
+    /**
+     * 获取编码
+     * @return 编码
+     */
     public String getEncoding() {
         return encoding;
     }
 
+    /**
+     * 设置编码
+     * @param encoding 编码
+     */
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
