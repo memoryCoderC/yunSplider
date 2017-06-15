@@ -3,7 +3,7 @@ package com.chen.entity;
 /**
  * Created by chen on 2017/6/14.
  */
-public class UserInfo {
+public class FansInfo {
     private String album_count;
     private String avatar_url;
     private String fans_count;

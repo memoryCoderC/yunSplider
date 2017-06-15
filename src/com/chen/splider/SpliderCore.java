@@ -28,23 +28,23 @@ public class SpliderCore {
      * 爬取构造
      */
     public SpliderCore() {
-        httpClient = new DefaultHttpClient();
-        encoding = "utf-8";
+        this("utf-8");
     }
 
     /**
      * 爬取构造
+     *
      * @param encoding 编码
      */
     public SpliderCore(String encoding) {
-        httpClient = new DefaultHttpClient();
-        this.encoding = encoding;
+        this(new DefaultHttpClient(), encoding);
     }
 
     /**
      * 爬取构造
+     *
      * @param httpClient 客户端
-     * @param encoding 编码
+     * @param encoding   编码
      */
     public SpliderCore(HttpClient httpClient, String encoding) {
         this.httpClient = httpClient;
@@ -53,9 +53,10 @@ public class SpliderCore {
 
     /**
      * 以get凡是进行爬取
+     *
      * @param url 爬取的链接
      * @return 爬取的String类型结果
-     * @throws NetStateNotOKException response的状态码不是ok时的异常
+     * @throws NetStateNotOKException  response的状态码不是ok时的异常
      * @throws GetReponseObjExceoption 获取response失败
      */
     public String doGet(String url) throws NetStateNotOKException, GetReponseObjExceoption {
@@ -64,7 +65,7 @@ public class SpliderCore {
 
     public String doGet(String url, Map<String, String> requestHeadMap)
             throws NetStateNotOKException, GetReponseObjExceoption {
-        String result = "";
+        String page = "";
         HttpGet request = new HttpGet(url);//创建get请求对象
 
         //设置请求头
@@ -91,19 +92,20 @@ public class SpliderCore {
             try {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
-                    result = EntityUtils.toString(entity, encoding);
+                    page = EntityUtils.toString(entity, encoding);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new NetStateNotOKException(url, statusLine.getStatusCode());
             }
         }
-        return result;
+        return page;
     }
 
 
     /**
      * 获取编码
+     *
      * @return 编码
      */
     public String getEncoding() {
@@ -112,6 +114,7 @@ public class SpliderCore {
 
     /**
      * 设置编码
+     *
      * @param encoding 编码
      */
     public void setEncoding(String encoding) {
