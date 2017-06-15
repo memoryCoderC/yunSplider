@@ -8,6 +8,6 @@ import com.chen.splider.YunShareSplider;
 public class Mian {
     public static void main(String[] args) {
         YunShareSplider shareSplider = new YunShareSplider();
-        shareSplider.getShare("224534490");
+        shareSplider.getShare("855888949");
     }
 }

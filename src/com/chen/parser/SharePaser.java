@@ -1,6 +1,6 @@
 package com.chen.parser;
 
-import com.chen.entity.FansInfo;
+import com.chen.entity.ShareInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -11,28 +11,28 @@ import java.util.List;
  * Created by chen on 2017/6/15.
  */
 public class SharePaser {
-    public static final String fansListKey = "fans_list";//粉丝列表的键
+    public static final String recordsKey = "records";//粉丝列表的键
     public static final String totalCountKey = "total_count";//总数的键
 
 
-    public List<FansInfo> parseFansInfo(String json) throws CanNotConvertJsonToObjException {
+    public List<ShareInfo> parseShareInfo(String json) throws CanNotConvertJsonToObjException {
         JSONObject jsonObject = JSONObject.fromObject(json);
-        return parseFansInfo(jsonObject);
+        return parseShareInfo(jsonObject);
     }
 
-    public List<FansInfo> parseFansInfo(JSONObject jsonObject) throws CanNotConvertJsonToObjException {
-        Object fansList = jsonObject.get(fansListKey);
+    public List<ShareInfo> parseShareInfo(JSONObject jsonObject) throws CanNotConvertJsonToObjException {
+        Object shareList = jsonObject.get(recordsKey);
         //3、转成数组
-        JSONArray jsonArray = JSONArray.fromObject(fansList);
+        JSONArray jsonArray = JSONArray.fromObject(shareList);
         //4、把把数组转成列表
-        List<FansInfo> fansInfoLit = null;
+        List<ShareInfo> shareInfoLit = null;
         try {
-            fansInfoLit = JSONArray.toList(jsonArray, FansInfo.class);
+            shareInfoLit = JSONArray.toList(jsonArray, ShareInfo.class);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new CanNotConvertJsonToObjException(FansInfo.class.getName());
+            throw new CanNotConvertJsonToObjException(ShareInfo.class.getName());
         }
-        return fansInfoLit;
+        return shareInfoLit;
     }
 
     public int getTotalCount(String json) throws CanNotConvertJsonToObjException {

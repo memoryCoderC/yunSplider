@@ -1,6 +1,6 @@
 package com.chen.parser;
 
-import com.chen.entity.FansInfo;
+import com.chen.entity.UserInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -15,22 +15,22 @@ public class FollowParser {
     public static final String totalCountKey = "total_count";//总数的键
 
 
-    public List<FansInfo> parseFansInfo(String json) throws CanNotConvertJsonToObjException {
+    public List<UserInfo> parseFansInfo(String json) throws CanNotConvertJsonToObjException {
         JSONObject jsonObject = JSONObject.fromObject(json);
         return parseFansInfo(jsonObject);
     }
 
-    public List<FansInfo> parseFansInfo(JSONObject jsonObject) throws CanNotConvertJsonToObjException {
+    public List<UserInfo> parseFansInfo(JSONObject jsonObject) throws CanNotConvertJsonToObjException {
         Object fansList = jsonObject.get(fansListKey);
         //3、转成数组
         JSONArray jsonArray = JSONArray.fromObject(fansList);
         //4、把把数组转成列表
-        List<FansInfo> fansInfoLit = null;
+        List<UserInfo> fansInfoLit = null;
         try {
-            fansInfoLit = JSONArray.toList(jsonArray, FansInfo.class);
+            fansInfoLit = JSONArray.toList(jsonArray, UserInfo.class);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new CanNotConvertJsonToObjException(FansInfo.class.getName());
+            throw new CanNotConvertJsonToObjException(UserInfo.class.getName());
         }
         return fansInfoLit;
     }

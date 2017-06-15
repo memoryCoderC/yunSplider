@@ -1,7 +1,9 @@
 package com.chen.splider;
 
+import com.chen.exception.CanNotConvertJsonToObjException;
 import com.chen.exception.GetReponseObjExceoption;
 import com.chen.exception.NetStateNotOKException;
+import com.chen.parser.SharePaser;
 import com.chen.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,13 +52,14 @@ public class YunShareSplider {
         map.put("Accept", "application/json, text/javascript, */*; q=0.01");
         map.put("Referer", "https://yun.baidu.com/share/home?uk=325913312#category/type=0");
         map.put("Accept-Language", "zh-CN");
+
         do {
             try {
-                String real_url = String.format(url, uk, currentPage * 24);//构造真实路径
+                String real_url = String.format(url, currentPage * 24, uk);//构造真实路径
 
                 //开始爬取
                 logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
-                resultPage = spliderCore.doGet(real_url,map);
+                resultPage = spliderCore.doGet(real_url, map);
                 logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
 
                 //为空不需要解析
@@ -74,6 +77,15 @@ public class YunShareSplider {
                 return false;
             }
 
+            SharePaser paser = new SharePaser();
+
+            try {
+                totalPage = paser.getTotalCount(resultPage);
+                paser.parseShareInfo(resultPage);
+            } catch (CanNotConvertJsonToObjException e) {
+                logger.error(e.toString());
+                e.printStackTrace();
+            }
             currentPage++;
         } while (currentPage < totalPage);
         return true;

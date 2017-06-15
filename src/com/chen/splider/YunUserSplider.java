@@ -1,6 +1,6 @@
 package com.chen.splider;
 
-import com.chen.entity.FansInfo;
+import com.chen.entity.UserInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import com.chen.exception.GetReponseObjExceoption;
 import com.chen.exception.NetStateNotOKException;
@@ -63,7 +63,7 @@ public class YunUserSplider {
                 }
                 //开始解析
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
-                List<FansInfo> fansInfos = paser.parseFansInfo(resultPage);
+                List<UserInfo> fansInfos = paser.parseFansInfo(resultPage);
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
 
                 totalPage = paser.getTotalCount(resultPage) / 24;//获取总页数
