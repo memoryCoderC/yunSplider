@@ -13,12 +13,16 @@ import java.util.Map;
 
 /**
  * Created by chen on 2017/6/15.
+ * 爬取分享列表
  */
 public class YunShareSplider {
     private SpliderCore spliderCore;//核心爬取类
-    private Logger logger = LoggerFactory.getLogger(YunUserSplider.class);
+    private Logger logger = LoggerFactory.getLogger(YunFansSplider.class);
     private String shareUrl = null;
 
+    /**
+     *
+     */
     public YunShareSplider() {
         this(new SpliderCore());
     }
@@ -45,7 +49,7 @@ public class YunShareSplider {
         int currentPage = 0;//当前分页
         int totalPage = 0;///总页数
 
-
+        //设置爬取头信息
         Map map = new HashMap();
         map.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
         map.put("X-Requested-With", "XMLHttpRequest");
@@ -78,7 +82,7 @@ public class YunShareSplider {
             }
 
             SharePaser paser = new SharePaser();
-
+            logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
             try {
                 totalPage = paser.getTotalCount(resultPage);
                 paser.parseShareInfo(resultPage);
@@ -86,6 +90,7 @@ public class YunShareSplider {
                 logger.error(e.toString());
                 e.printStackTrace();
             }
+            logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
             currentPage++;
         } while (currentPage < totalPage);
         return true;

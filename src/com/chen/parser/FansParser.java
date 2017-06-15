@@ -1,7 +1,6 @@
 package com.chen.parser;
 
-
-import com.chen.entity.FollowInfo;
+import com.chen.entity.FansInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -12,29 +11,29 @@ import java.util.List;
  * Created by chen on 2017/6/14.
  * 解析用户列表
  */
-public class FollowParser {
-    public static final String followListKey = "fans_list";//粉丝列表的键
+public class FansParser {
+    public static final String fansListKey = "fans_list";//粉丝列表的键
     public static final String totalCountKey = "total_count";//总数的键
 
 
-    public List<FollowInfo> parseFollowInfo(String json) throws CanNotConvertJsonToObjException {
+    public List<FansInfo> parseFansInfo(String json) throws CanNotConvertJsonToObjException {
         JSONObject jsonObject = JSONObject.fromObject(json);
-        return parseFollowInfo(jsonObject);
+        return parseFansInfo(jsonObject);
     }
 
-    public List<FollowInfo> parseFollowInfo(JSONObject jsonObject) throws CanNotConvertJsonToObjException {
-        Object followList = jsonObject.get(followListKey);
+    public List<FansInfo> parseFansInfo(JSONObject jsonObject) throws CanNotConvertJsonToObjException {
+        Object fansList = jsonObject.get(fansListKey);
         //3、转成数组
-        JSONArray jsonArray = JSONArray.fromObject(followList);
+        JSONArray jsonArray = JSONArray.fromObject(fansList);
         //4、把把数组转成列表
-        List<FollowInfo> followInfoList = null;
+        List<FansInfo> fansInfoLit = null;
         try {
-            followInfoList = JSONArray.toList(jsonArray, FollowInfo.class);
+            fansInfoLit = JSONArray.toList(jsonArray, FansInfo.class);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new CanNotConvertJsonToObjException(FollowInfo.class.getName());
+            throw new CanNotConvertJsonToObjException(FansInfo.class.getName());
         }
-        return followInfoList;
+        return fansInfoLit;
     }
 
     public int getTotalCount(String json) throws CanNotConvertJsonToObjException {

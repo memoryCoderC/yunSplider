@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by chen on 2017/6/15.
+ * 解析分析列表
  */
 public class SharePaser {
     public static final String recordsKey = "records";//粉丝列表的键

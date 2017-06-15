@@ -1,6 +1,6 @@
 package com.chen.splider;
 
-import com.chen.entity.UserInfo;
+import com.chen.entity.FollowInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import com.chen.exception.GetReponseObjExceoption;
 import com.chen.exception.NetStateNotOKException;
@@ -14,33 +14,31 @@ import java.util.List;
 /**
  * Created by chen on 2017/6/14.
  */
-public class YunUserSplider {
+public class YunFollowSplider {
 
     private SpliderCore spliderCore;//核心爬取类
-    private Logger logger = LoggerFactory.getLogger(YunUserSplider.class);
+    private Logger logger = LoggerFactory.getLogger(YunFollowSplider.class);
     private String followUrl = null;
-    private String fansUrl = null;
 
-    public YunUserSplider() {
+    public YunFollowSplider() {
         this(new SpliderCore());
     }
 
-    public YunUserSplider(String followUrl, String fansUrl) {
-        this(followUrl, fansUrl, new SpliderCore());
+    public YunFollowSplider(String followUrl) {
+        this(followUrl, new SpliderCore());
     }
 
-    public YunUserSplider(SpliderCore spliderCore) {
-        this(PropertiesUtil.getFollowUrl(), PropertiesUtil.getFansUrl(), spliderCore);
+    public YunFollowSplider(SpliderCore spliderCore) {
+        this(PropertiesUtil.getFollowUrl(), spliderCore);
     }
 
-    public YunUserSplider(String followUrl, String fansUrl, SpliderCore spliderCore) {
+    public YunFollowSplider(String followUrl, SpliderCore spliderCore) {
         this.followUrl = followUrl;
-        this.fansUrl = fansUrl;
         this.spliderCore = spliderCore;
     }
 
 
-    public boolean getUser(String uk, String url) {
+    public boolean getFollow(String uk, String url) {
         //如果uk已经被爬取就不需要爬取（数据库实现)
 
         FollowParser paser = new FollowParser();
@@ -63,8 +61,8 @@ public class YunUserSplider {
                 }
                 //开始解析
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
-                List<UserInfo> fansInfos = paser.parseFansInfo(resultPage);
-                logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
+                List<FollowInfo> fansInfos = paser.parseFollowInfo(resultPage);
+                logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
 
                 totalPage = paser.getTotalCount(resultPage) / 24;//获取总页数
 
@@ -87,11 +85,8 @@ public class YunUserSplider {
         return true;
     }
 
-    public boolean getFans(String uk) {
-        return getUser(uk, fansUrl);
+    public boolean getFollow(String uk) {
+        return getFollow(uk, followUrl);
     }
 
-    public boolean getFollow(String uk) {
-        return getUser(uk, fansUrl);
-    }
 }
