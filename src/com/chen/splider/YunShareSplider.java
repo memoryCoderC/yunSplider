@@ -1,5 +1,9 @@
 package com.chen.splider;
 
+import com.chen.dao.FileDao;
+import com.chen.dao.ShareDao;
+import com.chen.entity.FileInfo;
+import com.chen.entity.ShareInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import com.chen.exception.GetReponseObjExceoption;
 import com.chen.exception.NetStateNotOKException;
@@ -8,7 +12,9 @@ import com.chen.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +25,8 @@ public class YunShareSplider {
     private SpliderCore spliderCore;//核心爬取类
     private Logger logger = LoggerFactory.getLogger(YunFansSplider.class);
     private String shareUrl = null;
-
+    private ShareDao shareDao = new ShareDao();
+    private FileDao fileDao = new FileDao();
     /**
      *
      */
@@ -80,16 +87,30 @@ public class YunShareSplider {
                 e.printStackTrace();
                 return false;
             }
-
+            List<ShareInfo> shareInfos;
             SharePaser paser = new SharePaser();
             logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
             try {
                 totalPage = paser.getTotalCount(resultPage);
-                paser.parseShareInfo(resultPage);
+                shareInfos = paser.parseShareInfo(resultPage);
             } catch (CanNotConvertJsonToObjException e) {
                 logger.error(e.toString());
                 e.printStackTrace();
+                return false;
             }
+
+            for (ShareInfo shareInfo : shareInfos) {
+                try {
+                    shareDao.saveShare(shareInfo);
+                    for (FileInfo fileInfo : shareInfo.getFilelist()) {
+                        fileDao.saveFile(fileInfo);
+                    }
+                } catch (SQLException e) {
+                    logger.error("保存数据库出错");
+                    e.printStackTrace();
+                }
+            }
+
             logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
             currentPage++;
         } while (currentPage < totalPage);

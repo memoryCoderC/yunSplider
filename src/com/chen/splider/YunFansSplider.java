@@ -66,15 +66,20 @@ public class YunFansSplider {
                 //开始解析
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
                 List<FansInfo> fansInfos = paser.parseFansInfo(resultPage);
+                logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
+
+
+                //保存到数据库
+                logger.info("存入数据库开始-----uk" + uk + "start:" + currentPage * 24);
                 for (FansInfo fansInfo : fansInfos) {
                     try {
                         fansDao.saveFans(fansInfo);
                     } catch (SQLException e) {
-                        logger.error(e.toString());
+                        logger.error("存入数据库错误-----uk"+uk+"错误fans"+ fansInfo.getFans_uk());
                         e.printStackTrace();
                     }
                 }
-                logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
+                logger.info("存入数据库结束-----uk" + uk + "start:" + currentPage * 24);
 
                 totalPage = paser.getTotalCount(resultPage) / 24;//获取总页数
 

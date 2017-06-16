@@ -14,6 +14,10 @@ import java.util.List;
  * Created by chen on 2017/6/16.
  */
 public class FansDao {
+    /**
+     * @param fansInfo
+     * @throws SQLException
+     */
     public void saveFans(FansInfo fansInfo) throws SQLException {
         String sql = "INSERT INTO `FansInfo` (`fans_uk`, `is_craw`, `album_count`, `avatar_url`, `fans_count`, `fans_uname`, `follow_count`, `follow_time`, `intro`, `is_vip`, `pubshare_count`, `type`, `Suser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection connection = DBUtil.getConnection();
@@ -31,19 +35,41 @@ public class FansDao {
         preparedStatement.setObject(11, fansInfo.getPubshare_count());
         preparedStatement.setObject(12, fansInfo.getType());
         preparedStatement.setObject(13, fansInfo.getSuser_type());
-        int i = preparedStatement.executeUpdate();
-        DBUtil.close(connection, preparedStatement, null);
+        try {
+            int i = preparedStatement.executeUpdate();
+        } finally {
+            DBUtil.close(connection, preparedStatement, null);
+        }
+
     }
+
+    public void updateFansClaw(String fans_uk) throws SQLException {
+        String sql = "UPDATE FansInfo SET is_craw='1' WHERE (`fans_uk`=?) LIMIT 1";
+        Connection connection = DBUtil.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setObject(1, fans_uk);
+        try {
+            int i = preparedStatement.executeUpdate();
+        } finally {
+            DBUtil.close(connection, preparedStatement, null);
+        }
+    }
+
     public List<String> getFansUk() throws SQLException {
         List<String> UKList = new ArrayList<String>();
         String sql = "SELECT fans_uk FROM FansInfo WHERE is_craw = 0 LIMIT 0, 10";
         Connection connection = DBUtil.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            UKList.add(resultSet.getString(1));
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                UKList.add(resultSet.getString(1));
+            }
+        } finally {
+            DBUtil.close(connection, preparedStatement, null);
         }
-        DBUtil.close(connection, preparedStatement, null);
         return UKList;
     }
 }

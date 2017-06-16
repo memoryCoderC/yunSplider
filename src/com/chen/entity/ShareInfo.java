@@ -36,6 +36,9 @@ public class ShareInfo {
     }
 
     public String getAvatar_url() {
+        if (avatar_url == null) {
+            return "";
+        }
         return avatar_url;
     }
 
@@ -44,6 +47,9 @@ public class ShareInfo {
     }
 
     public String getCategory() {
+        if (category == null) {
+            return "";
+        }
         return category;
     }
 
@@ -52,6 +58,9 @@ public class ShareInfo {
     }
 
     public String getClienttype() {
+        if (clienttype == null) {
+            return "";
+        }
         return clienttype;
     }
 
@@ -60,6 +69,9 @@ public class ShareInfo {
     }
 
     public String getdCnt() {
+        if (dCnt == null) {
+            return "";
+        }
         return dCnt;
     }
 
@@ -68,6 +80,9 @@ public class ShareInfo {
     }
 
     public String getData_id() {
+        if (data_id == null) {
+            return "";
+        }
         return data_id;
     }
 
@@ -76,6 +91,9 @@ public class ShareInfo {
     }
 
     public String getDesc() {
+        if (desc == null) {
+            return "";
+        }
         return desc;
     }
 
@@ -84,6 +102,9 @@ public class ShareInfo {
     }
 
     public String getDir_cnt() {
+        if (dir_cnt == null) {
+            return "0";
+        }
         return dir_cnt;
     }
 
@@ -92,6 +113,9 @@ public class ShareInfo {
     }
 
     public String getFeed_time() {
+        if (feed_time == null) {
+            return "";
+        }
         return feed_time;
     }
 
@@ -100,6 +124,9 @@ public class ShareInfo {
     }
 
     public String getFeed_type() {
+        if (feed_type == null) {
+            return "";
+        }
         return feed_type;
     }
 
@@ -108,6 +135,9 @@ public class ShareInfo {
     }
 
     public String getFilecount() {
+        if (filecount == null) {
+            return "";
+        }
         return filecount;
     }
 
@@ -116,6 +146,9 @@ public class ShareInfo {
     }
 
     public String getShareid() {
+        if (shareid == null) {
+            return "";
+        }
         return shareid;
     }
 
@@ -124,6 +157,9 @@ public class ShareInfo {
     }
 
     public String getShorturl() {
+        if (shorturl == null) {
+            return "";
+        }
         return shorturl;
     }
 
@@ -132,6 +168,9 @@ public class ShareInfo {
     }
 
     public String getSource_id() {
+        if (source_id == null) {
+            return "";
+        }
         return source_id;
     }
 
@@ -140,6 +179,9 @@ public class ShareInfo {
     }
 
     public String getSource_uid() {
+        if (source_uid == null) {
+            return "";
+        }
         return source_uid;
     }
 
@@ -148,6 +190,9 @@ public class ShareInfo {
     }
 
     public String gettCnt() {
+        if (tCnt == null) {
+            return "";
+        }
         return tCnt;
     }
 
@@ -156,6 +201,9 @@ public class ShareInfo {
     }
 
     public String getThird() {
+        if (third == null) {
+            return "";
+        }
         return third;
     }
 
@@ -164,6 +212,9 @@ public class ShareInfo {
     }
 
     public String getTitle() {
+        if (title == null) {
+            return "";
+        }
         return title;
     }
 
@@ -172,6 +223,9 @@ public class ShareInfo {
     }
 
     public String getUk() {
+        if (uk == null) {
+            return "";
+        }
         return uk;
     }
 
@@ -180,6 +234,9 @@ public class ShareInfo {
     }
 
     public String getUsername() {
+        if (username == null) {
+            return "";
+        }
         return username;
     }
 
@@ -188,6 +245,9 @@ public class ShareInfo {
     }
 
     public String getvCnt() {
+        if (vCnt == null) {
+            return "";
+        }
         return vCnt;
     }
 

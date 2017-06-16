@@ -12,7 +12,7 @@
     <!-- This is my config for mysql-->
     <named-config name="mysql">
         <property name="driverClass">com.mysql.jdbc.Driver</property>
-        <property name="jdbcUrl">jdbc:mysql://123.206.55.89:3306/db_yun_splider</property>
+        <property name="jdbcUrl">jdbc:mysql://123.206.55.89:3306/db_yun_splider?characterEncoding=UTF-8</property>
         <property name="user">root</property>
         <property name="password">888666</property>
         <property name="initialPoolSize">10</property>

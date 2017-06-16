@@ -19,6 +19,9 @@ public class FansInfo {
     private String Suser_type;
 
     public String getAlbum_count() {
+        if (album_count == null) {
+            return "";
+        }
         return album_count;
     }
 
@@ -27,6 +30,9 @@ public class FansInfo {
     }
 
     public String getAvatar_url() {
+        if (avatar_url == null) {
+            return "";
+        }
         return avatar_url;
     }
 
@@ -35,6 +41,9 @@ public class FansInfo {
     }
 
     public String getFans_count() {
+        if (fans_count == null) {
+            return "";
+        }
         return fans_count;
     }
 
@@ -43,6 +52,9 @@ public class FansInfo {
     }
 
     public String getFans_uk() {
+        if (fans_uk == null) {
+            return "";
+        }
         return fans_uk;
     }
 
@@ -51,6 +63,9 @@ public class FansInfo {
     }
 
     public String getFans_uname() {
+        if (fans_uname == null) {
+            return "";
+        }
         return fans_uname;
     }
 
@@ -59,6 +74,9 @@ public class FansInfo {
     }
 
     public String getFollow_count() {
+        if (follow_count == null) {
+            return "";
+        }
         return follow_count;
     }
 
@@ -67,6 +85,9 @@ public class FansInfo {
     }
 
     public String getFollow_time() {
+        if (follow_time == null) {
+            return "";
+        }
         return follow_time;
     }
 
@@ -75,6 +96,9 @@ public class FansInfo {
     }
 
     public String getIntro() {
+        if (intro == null) {
+            return "";
+        }
         return intro;
     }
 
@@ -83,6 +107,9 @@ public class FansInfo {
     }
 
     public String getIs_vip() {
+        if (is_vip == null) {
+            return "";
+        }
         return is_vip;
     }
 
@@ -91,6 +118,9 @@ public class FansInfo {
     }
 
     public String getPubshare_count() {
+        if (pubshare_count == null) {
+            return "";
+        }
         return pubshare_count;
     }
 
@@ -99,6 +129,9 @@ public class FansInfo {
     }
 
     public String getType() {
+        if (type == null) {
+            return "";
+        }
         return type;
     }
 
@@ -107,6 +140,9 @@ public class FansInfo {
     }
 
     public String getSuser_type() {
+        if (Suser_type == null) {
+            return "";
+        }
         return Suser_type;
     }
 

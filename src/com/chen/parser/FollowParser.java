@@ -13,7 +13,7 @@ import java.util.List;
  * 解析用户列表
  */
 public class FollowParser {
-    public static final String followListKey = "fans_list";//粉丝列表的键
+    public static final String followListKey = "follow_list";//粉丝列表的键
     public static final String totalCountKey = "total_count";//总数的键
 
 

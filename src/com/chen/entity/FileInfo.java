@@ -17,6 +17,9 @@ public class FileInfo {
 
 
     public String getCategory() {
+        if (category == null) {
+            return "";
+        }
         return category;
     }
 
@@ -25,6 +28,9 @@ public class FileInfo {
     }
 
     public String getFs_id() {
+        if (fs_id == null) {
+            return "";
+        }
         return fs_id;
     }
 
@@ -33,6 +39,9 @@ public class FileInfo {
     }
 
     public String getIsdir() {
+        if (isdir == null) {
+            return "";
+        }
         return isdir;
     }
 
@@ -41,6 +50,9 @@ public class FileInfo {
     }
 
     public String getMd5() {
+        if (md5 == null) {
+            return "";
+        }
         return md5;
     }
 
@@ -49,6 +61,9 @@ public class FileInfo {
     }
 
     public String getPath() {
+        if (path == null) {
+            return "";
+        }
         return path;
     }
 
@@ -57,6 +72,9 @@ public class FileInfo {
     }
 
     public String getServer_filename() {
+        if (server_filename == null) {
+            return "";
+        }
         return server_filename;
     }
 
@@ -65,6 +83,9 @@ public class FileInfo {
     }
 
     public String getSign() {
+        if (sign == null) {
+            return "";
+        }
         return sign;
     }
 
@@ -73,6 +94,9 @@ public class FileInfo {
     }
 
     public String getSize() {
+        if (size == null) {
+            return "";
+        }
         return size;
     }
 
@@ -81,6 +105,9 @@ public class FileInfo {
     }
 
     public String getTime_stamp() {
+        if (time_stamp == null) {
+            return "";
+        }
         return time_stamp;
     }
 

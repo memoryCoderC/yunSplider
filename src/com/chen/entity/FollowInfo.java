@@ -18,6 +18,9 @@ public class FollowInfo {
     private String user_type;
 
     public String getAlbum_count() {
+        if (album_count == null) {
+            return "";
+        }
         return album_count;
     }
 
@@ -26,6 +29,9 @@ public class FollowInfo {
     }
 
     public String getAvatar_url() {
+        if (avatar_url == null) {
+            return "";
+        }
         return avatar_url;
     }
 
@@ -34,6 +40,9 @@ public class FollowInfo {
     }
 
     public String getFans_count() {
+        if (fans_count == null) {
+            return "";
+        }
         return fans_count;
     }
 
@@ -42,6 +51,9 @@ public class FollowInfo {
     }
 
     public String getFollow_count() {
+        if (follow_count == null) {
+            return "";
+        }
         return follow_count;
     }
 
@@ -50,6 +62,9 @@ public class FollowInfo {
     }
 
     public String getFollow_time() {
+        if (follow_time == null) {
+            return "";
+        }
         return follow_time;
     }
 
@@ -58,6 +73,9 @@ public class FollowInfo {
     }
 
     public String getFollow_uk() {
+        if (follow_uk == null) {
+            return "";
+        }
         return follow_uk;
     }
 
@@ -66,6 +84,9 @@ public class FollowInfo {
     }
 
     public String getFollow_uname() {
+        if (follow_uname == null) {
+            return "";
+        }
         return follow_uname;
     }
 
@@ -74,6 +95,9 @@ public class FollowInfo {
     }
 
     public String getIntro() {
+        if (intro == null) {
+            return "";
+        }
         return intro;
     }
 
@@ -82,6 +106,9 @@ public class FollowInfo {
     }
 
     public String getIs_vip() {
+        if (is_vip == null) {
+            return "";
+        }
         return is_vip;
     }
 
@@ -90,6 +117,9 @@ public class FollowInfo {
     }
 
     public String getPubshare_count() {
+        if (pubshare_count == null) {
+            return "";
+        }
         return pubshare_count;
     }
 
@@ -98,6 +128,9 @@ public class FollowInfo {
     }
 
     public String getType() {
+        if (type == null) {
+            return "";
+        }
         return type;
     }
 
@@ -106,6 +139,9 @@ public class FollowInfo {
     }
 
     public String getUser_type() {
+        if (user_type == null) {
+            return "";
+        }
         return user_type;
     }
 
