@@ -1,5 +1,6 @@
 package com.chen.splider;
 
+import com.chen.dao.FansDao;
 import com.chen.entity.FansInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import com.chen.exception.GetReponseObjExceoption;
@@ -9,6 +10,7 @@ import com.chen.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -19,6 +21,8 @@ public class YunFansSplider {
     private SpliderCore spliderCore;//核心爬取类
     private Logger logger = LoggerFactory.getLogger(YunFansSplider.class);
     private String fansUrl = null;
+    private FansDao fansDao = new FansDao();
+
 
     public YunFansSplider() {
         this(new SpliderCore());
@@ -62,6 +66,14 @@ public class YunFansSplider {
                 //开始解析
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
                 List<FansInfo> fansInfos = paser.parseFansInfo(resultPage);
+                for (FansInfo fansInfo : fansInfos) {
+                    try {
+                        fansDao.saveFans(fansInfo);
+                    } catch (SQLException e) {
+                        logger.error(e.toString());
+                        e.printStackTrace();
+                    }
+                }
                 logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
 
                 totalPage = paser.getTotalCount(resultPage) / 24;//获取总页数
