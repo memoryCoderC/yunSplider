@@ -107,7 +107,7 @@ public class FollowInfo {
 
     public String getIs_vip() {
         if (is_vip == null) {
-            return "";
+            return "0";
         }
         return is_vip;
     }
@@ -129,7 +129,7 @@ public class FollowInfo {
 
     public String getType() {
         if (type == null) {
-            return "";
+            return "0";
         }
         return type;
     }
@@ -140,7 +140,7 @@ public class FollowInfo {
 
     public String getUser_type() {
         if (user_type == null) {
-            return "";
+            return "0";
         }
         return user_type;
     }

@@ -7,8 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by chen on 2017/6/16.
@@ -18,6 +17,9 @@ public class FollowDao {
         String sql = "INSERT INTO `FollowInfo` (`follow_uk`, `is_claw`, `album_count`, `avatar_url`, `fans_count`, `follow_count`, `follow_time`, `follow_uname`, `intro`, `is_vip`, `pubshare_count`, `type`, `user_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        if (followInfo == null) {
+            return;
+        }
         preparedStatement.setObject(1, followInfo.getFollow_uk());
         preparedStatement.setObject(2, 0);
         preparedStatement.setObject(3, followInfo.getAlbum_count());
@@ -50,9 +52,8 @@ public class FollowDao {
         }
     }
 
-    public List<String> getFollowUk() throws SQLException {
-        List<String> UKList = new ArrayList<String>();
-        String sql = "SELECT follow_uk FROM FollowInfo WHERE is_craw = 0 LIMIT 0, 10";
+    public LinkedBlockingQueue<String> getFollowUk(LinkedBlockingQueue UKList) throws SQLException {
+        String sql = "SELECT follow_uk FROM FollowInfo WHERE is_craw = 0 LIMIT 0, 30";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -60,7 +61,11 @@ public class FollowDao {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                UKList.add(resultSet.getString(1));
+                try {
+                    UKList.put(resultSet.getString(1));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         } finally {
 

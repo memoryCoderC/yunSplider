@@ -12,9 +12,12 @@ import java.sql.SQLException;
  */
 public class FileDao {
     public void saveFile(FileInfo fileInfo) throws SQLException {
-        String sql = "INSERT INTO `FileInfo` (`category`, `fs_id`, `isdir`, `md5`, `path`, `server_filename`, `sign`, `size`, `time_stamp`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO `FileInfo` (`category`, `fs_id`, `isdir`, `md5`, `path`, `server_filename`, `sign`, `size`, `time_stamp`,`shorturl`) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        if (fileInfo == null) {
+            return;
+        }
         preparedStatement.setObject(1, fileInfo.getCategory());
         preparedStatement.setObject(2, fileInfo.getFs_id());
         preparedStatement.setObject(3, fileInfo.getIsdir());
@@ -24,6 +27,7 @@ public class FileDao {
         preparedStatement.setObject(7, fileInfo.getSign());
         preparedStatement.setObject(8, fileInfo.getSize());
         preparedStatement.setObject(9, fileInfo.getTime_stamp());
+        preparedStatement.setObject(10, fileInfo.getShorturl());
         try {
             int i = preparedStatement.executeUpdate();
         }finally {

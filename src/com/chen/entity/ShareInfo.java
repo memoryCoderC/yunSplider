@@ -59,7 +59,7 @@ public class ShareInfo {
 
     public String getClienttype() {
         if (clienttype == null) {
-            return "";
+            return "0";
         }
         return clienttype;
     }

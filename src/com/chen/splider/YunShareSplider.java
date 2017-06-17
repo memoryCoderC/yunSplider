@@ -75,7 +75,7 @@ public class YunShareSplider {
 
                 //为空不需要解析
                 if (resultPage == null || resultPage.equals("")) {
-                    return false;
+                    return true;
                 }
 
             } catch (NetStateNotOKException e) {
@@ -96,13 +96,14 @@ public class YunShareSplider {
             } catch (CanNotConvertJsonToObjException e) {
                 logger.error(e.toString());
                 e.printStackTrace();
-                return false;
+                return true;
             }
 
             for (ShareInfo shareInfo : shareInfos) {
                 try {
                     shareDao.saveShare(shareInfo);
                     for (FileInfo fileInfo : shareInfo.getFilelist()) {
+                        fileInfo.setShorturl(shareInfo.getShorturl());
                         fileDao.saveFile(fileInfo);
                     }
                 } catch (SQLException e) {

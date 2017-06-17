@@ -61,7 +61,7 @@ public class YunFollowSplider {
 
                 //为空不需要解析
                 if (resultPage == null || resultPage.equals("")) {
-                    return false;
+                    return true;
                 }
                 //开始解析
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
@@ -89,7 +89,7 @@ public class YunFollowSplider {
             } catch (CanNotConvertJsonToObjException e) {
                 e.printStackTrace();
                 logger.error(e.toString());
-                return false;
+                return true;
             }
 
             currentPage++;

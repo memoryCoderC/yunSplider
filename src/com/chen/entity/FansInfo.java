@@ -108,7 +108,7 @@ public class FansInfo {
 
     public String getIs_vip() {
         if (is_vip == null) {
-            return "";
+            return "0";
         }
         return is_vip;
     }

@@ -96,8 +96,16 @@ public class SpliderCore {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                sleep6();
                 throw new NetStateNotOKException(url, statusLine.getStatusCode());
+
             }
+        }
+
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return page;
     }
@@ -119,5 +127,13 @@ public class SpliderCore {
      */
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    private void sleep6() {
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
     }
 }

@@ -7,8 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by chen on 2017/6/16.
@@ -22,6 +21,10 @@ public class FansDao {
         String sql = "INSERT INTO `FansInfo` (`fans_uk`, `is_craw`, `album_count`, `avatar_url`, `fans_count`, `fans_uname`, `follow_count`, `follow_time`, `intro`, `is_vip`, `pubshare_count`, `type`, `Suser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        if (fansInfo == null) {
+            return;
+        }
         preparedStatement.setObject(1, fansInfo.getFans_uk());
         preparedStatement.setObject(2, 0);
         preparedStatement.setObject(3, fansInfo.getAlbum_count());
@@ -55,9 +58,8 @@ public class FansDao {
         }
     }
 
-    public List<String> getFansUk() throws SQLException {
-        List<String> UKList = new ArrayList<String>();
-        String sql = "SELECT fans_uk FROM FansInfo WHERE is_craw = 0 LIMIT 0, 10";
+    public LinkedBlockingQueue<String> getFansUk(LinkedBlockingQueue UKList) throws SQLException {
+        String sql = "SELECT fans_uk FROM FansInfo WHERE is_craw = 0 LIMIT 0, 30";
         Connection connection = DBUtil.getConnection();
 
         PreparedStatement preparedStatement = null;
@@ -65,7 +67,12 @@ public class FansDao {
             preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                UKList.add(resultSet.getString(1));
+
+                try {
+                    UKList.put(resultSet.getString(1));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         } finally {
             DBUtil.close(connection, preparedStatement, null);

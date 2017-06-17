@@ -15,6 +15,9 @@ public class ShareDao {
         String sql = "INSERT INTO `ShareInfo` (`shareid`, `title`, `uk`, `username`, `shorturl`,`data_id`, `avatar_url`, `category`, `clienttype`, `dCnt`, `dir_cnt`, `feed_time`, `feed_type`, `filecount`, `source_id`, `source_uid`, `tCnt`, `third`, `vCnt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        if (shareInfo == null) {
+            return;
+        }
         preparedStatement.setObject(1, shareInfo.getShareid());
         preparedStatement.setObject(2, shareInfo.getTitle());
         preparedStatement.setObject(3, shareInfo.getUk());
@@ -36,7 +39,7 @@ public class ShareDao {
         preparedStatement.setObject(19, shareInfo.getvCnt());
         try {
             int i = preparedStatement.executeUpdate();
-        }finally {
+        } finally {
             DBUtil.close(connection, preparedStatement, null);
         }
     }

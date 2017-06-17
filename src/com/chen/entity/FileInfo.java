@@ -14,7 +14,18 @@ public class FileInfo {
     private String sign;
     private String size;
     private String time_stamp;
+    private String shorturl;
 
+    public String getShorturl() {
+        if (shorturl == null) {
+            return "";
+        }
+        return shorturl;
+    }
+
+    public void setShorturl(String shorturl) {
+        this.shorturl = shorturl;
+    }
 
     public String getCategory() {
         if (category == null) {
@@ -40,7 +51,7 @@ public class FileInfo {
 
     public String getIsdir() {
         if (isdir == null) {
-            return "";
+            return "0";
         }
         return isdir;
     }
