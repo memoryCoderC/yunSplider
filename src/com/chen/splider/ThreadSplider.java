@@ -80,7 +80,7 @@ public class ThreadSplider implements Runnable {
             }
 
             boolean t1 = shareSplider.getShare(s);
-            boolean t2 = yunFansSplider.getFans(s);
+           //boolean t2 = yunFansSplider.getFans(s);
             boolean t3 = false;
             try {
                 fansDao.updateFansClaw(s);
@@ -89,16 +89,6 @@ public class ThreadSplider implements Runnable {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-            if (t1 && t2 && t3) {
-                try {
-                    Thread.sleep(60000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
 
         }
 

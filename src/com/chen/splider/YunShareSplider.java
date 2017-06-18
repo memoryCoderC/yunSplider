@@ -61,7 +61,7 @@ public class YunShareSplider {
         map.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
         map.put("X-Requested-With", "XMLHttpRequest");
         map.put("Accept", "application/json, text/javascript, */*; q=0.01");
-        map.put("Referer", "https://yun.baidu.com/share/home?uk=325913312#category/type=0");
+        map.put("Referer", "http://pan.baidu.com/share/home?uk=743889484&view=share");
         map.put("Accept-Language", "zh-CN");
 
         do {

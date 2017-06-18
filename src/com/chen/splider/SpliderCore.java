@@ -7,9 +7,11 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -21,9 +23,9 @@ import java.util.Set;
  * 进行爬取的主要类
  */
 public class SpliderCore {
-    private HttpClient httpClient;//爬取的客户端
+    private CloseableHttpClient httpClient;//爬取的客户端
     private String encoding;//解析时的编码
-
+    static CookieStore cookieStore = new BasicCookieStore();
     /**
      * 爬取构造
      */
@@ -37,7 +39,9 @@ public class SpliderCore {
      * @param encoding 编码
      */
     public SpliderCore(String encoding) {
-        this(new DefaultHttpClient(), encoding);
+        this(HttpClients.custom()
+                .setDefaultCookieStore(cookieStore)
+                .build(), encoding);
     }
 
     /**
@@ -46,7 +50,7 @@ public class SpliderCore {
      * @param httpClient 客户端
      * @param encoding   编码
      */
-    public SpliderCore(HttpClient httpClient, String encoding) {
+    public SpliderCore(CloseableHttpClient httpClient, String encoding) {
         this.httpClient = httpClient;
         this.encoding = encoding;
     }
@@ -103,7 +107,7 @@ public class SpliderCore {
         }
 
         try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

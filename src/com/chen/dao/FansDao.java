@@ -43,7 +43,6 @@ public class FansDao {
         } finally {
             DBUtil.close(connection, preparedStatement, null);
         }
-
     }
 
     public void updateFansClaw(String fans_uk) throws SQLException {

@@ -44,6 +44,11 @@ public class SharePaser {
             count = (int) totalCount;
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
             throw new CanNotConvertJsonToObjException(Integer.class.getName());
         }
         return count;

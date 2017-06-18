@@ -24,7 +24,7 @@ public class Main {
         LinkedBlockingQueue queue = new LinkedBlockingQueue();
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        for (int i = 0; i <Runtime.getRuntime().availableProcessors() ; i++) {
+        for (int i = 0; i <1 ; i++) {
             executorService.execute(new ThreadSplider(fansDao,followDao,queue));
         }
 
