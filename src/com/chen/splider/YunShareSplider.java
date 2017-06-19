@@ -1,7 +1,7 @@
 package com.chen.splider;
 
-import com.chen.dao.FileDao;
-import com.chen.dao.ShareDao;
+import com.chen.dao.FansDao;
+import com.chen.dao.FileInfoDao;
 import com.chen.entity.FileInfo;
 import com.chen.entity.ShareInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,34 +22,45 @@ import java.util.Map;
  * Created by chen on 2017/6/15.
  * 爬取分享列表
  */
-public class YunShareSplider {
+public class YunShareSplider implements Runnable {
     private SpliderCore spliderCore;//核心爬取类
     private Logger logger = LoggerFactory.getLogger(YunFansSplider.class);
     private String shareUrl = null;
-    private ShareDao shareDao = new ShareDao();
-    private FileDao fileDao = new FileDao();
+    private FileInfoDao fileInfoDao = new FileInfoDao();
+    volatile boolean isRun;
+    private FansDao fansDao = new FansDao();
+
     /**
      *
      */
     public YunShareSplider() {
-        this(new SpliderCore());
+        this(new SpliderCore(), true);
     }
 
-    public YunShareSplider(String shareUrl) {
-        this(shareUrl, new SpliderCore());
+    public YunShareSplider(boolean isRun) {
+        this(new SpliderCore(), isRun);
+    }
+
+    public YunShareSplider(String shareUrl, boolean isRun) {
+        this(shareUrl, new SpliderCore(), isRun);
     }
 
     public YunShareSplider(SpliderCore spliderCore) {
-        this(PropertiesUtil.getShareUrl(), spliderCore);
+        this(PropertiesUtil.getShareUrl(), spliderCore, true);
     }
 
-    public YunShareSplider(String shareUrl, SpliderCore spliderCore) {
+    public YunShareSplider(SpliderCore spliderCore, boolean isRun) {
+        this(PropertiesUtil.getShareUrl(), spliderCore, isRun);
+    }
+
+    public YunShareSplider(String shareUrl, SpliderCore spliderCore, boolean isRun) {
         this.shareUrl = shareUrl;
         this.spliderCore = spliderCore;
+        this.isRun = isRun;
     }
 
 
-    public boolean getShare(String uk, String url) {
+    public boolean getShare(String uk) {
         //如果uk已经被爬取就不需要爬取（数据库实现)
 
 
@@ -66,7 +78,7 @@ public class YunShareSplider {
 
         do {
             try {
-                String real_url = String.format(url, currentPage * 24, uk);//构造真实路径
+                String real_url = String.format(shareUrl, currentPage * 24, uk);//构造真实路径
 
                 //开始爬取
                 logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
@@ -101,25 +113,67 @@ public class YunShareSplider {
 
             for (ShareInfo shareInfo : shareInfos) {
                 try {
-                    shareDao.saveShare(shareInfo);
                     for (FileInfo fileInfo : shareInfo.getFilelist()) {
-                        fileInfo.setShorturl(shareInfo.getShorturl());
-                        fileDao.saveFile(fileInfo);
+                        fileInfo.setShareid(shareInfo.getShareid());
+                        fileInfo.setUk(shareInfo.getUk());
+                        fileInfoDao.saveFile(fileInfo);
                     }
                 } catch (SQLException e) {
                     logger.error("保存数据库出错");
                     e.printStackTrace();
                 }
             }
-
             logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             currentPage++;
         } while (currentPage < totalPage);
         return true;
     }
 
-    public boolean getShare(String uk) {
-        return getShare(uk, shareUrl);
+    public String getShareUrl() {
+        return shareUrl;
     }
 
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
+
+
+    public boolean getIsRun() {
+        return isRun;
+    }
+
+    public void setIsRun(boolean isRun) {
+        this.isRun = isRun;
+    }
+
+    /**
+     * When an object implementing interface <code>Runnable</code> is used
+     * to create a thread, starting the thread causes the object's
+     * <code>run</code> method to be called in that separately executing
+     * thread.
+     * <p>
+     * The general contract of the method <code>run</code> is that it may
+     * take any action whatsoever.
+     *
+     * @see Thread#run()
+     */
+    @Override
+    public void run() {
+        List<String> ukList = new LinkedList<>();
+        while (isRun) {
+            try {
+                ukList = fansDao.getUkList(FansDao.COLUMN_PUBSHARE_CRAW);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            for (String s : ukList) {
+                getShare(s);
+            }
+        }
+    }
 }

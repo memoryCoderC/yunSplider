@@ -11,38 +11,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by chen on 2017/6/14.
  */
-public class YunFansSplider {
+public class YunFansSplider implements Runnable {
 
     private SpliderCore spliderCore;//核心爬取类
     private Logger logger = LoggerFactory.getLogger(YunFansSplider.class);
     private String fansUrl = null;
     private FansDao fansDao = new FansDao();
-
+    volatile boolean isRun = true;
 
     public YunFansSplider() {
-        this(new SpliderCore());
-    }
-
-    public YunFansSplider(String fansUrl) {
-        this(fansUrl, new SpliderCore());
+        this(new SpliderCore(), true);
     }
 
     public YunFansSplider(SpliderCore spliderCore) {
-        this(PropertiesUtil.getFansUrl(), spliderCore);
+        this(spliderCore, true);
     }
 
-    public YunFansSplider(String fansUrl, SpliderCore spliderCore) {
+    public YunFansSplider(boolean isRun) {
+        this(new SpliderCore(), isRun);
+    }
+
+    public YunFansSplider(String fansUrl, boolean isRun) {
+        this(fansUrl, new SpliderCore(), isRun);
+    }
+
+    public YunFansSplider(SpliderCore spliderCore, boolean isRun) {
+        this(PropertiesUtil.getFansUrl(), spliderCore, isRun);
+    }
+
+    public YunFansSplider(String fansUrl, SpliderCore spliderCore, boolean isRun) {
         this.fansUrl = fansUrl;
         this.spliderCore = spliderCore;
+        this.isRun = isRun;
     }
 
 
-    public boolean getFans(String uk, String url) {
+    public boolean getFans(String uk) {
         //如果uk已经被爬取就不需要爬取（数据库实现)
 
         FansParser paser = new FansParser();
@@ -52,8 +62,7 @@ public class YunFansSplider {
 
         do {
             try {
-                String real_url = String.format(url, uk, currentPage * 24);//构造真实路径
-
+                String real_url = String.format(fansUrl, uk, currentPage * 24);//构造真实路径
                 //开始爬取
                 logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
                 resultPage = spliderCore.doGet(real_url);
@@ -75,7 +84,7 @@ public class YunFansSplider {
                     try {
                         fansDao.saveFans(fansInfo);
                     } catch (SQLException e) {
-                        logger.error("存入数据库错误-----uk"+uk+"错误fans"+ fansInfo.getFans_uk());
+                        logger.error("存入数据库错误-----uk" + uk + "错误fans" + fansInfo.getFans_uk() + e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -96,14 +105,39 @@ public class YunFansSplider {
                 logger.error(e.toString());
                 return true;
             }
-
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             currentPage++;
         } while (currentPage < totalPage);
         return true;
     }
 
-    public boolean getFans(String uk) {
-        return getFans(uk, fansUrl);
+    /**
+     * When an object implementing interface <code>Runnable</code> is used
+     * to create a thread, starting the thread causes the object's
+     * <code>run</code> method to be called in that separately executing
+     * thread.
+     * <p>
+     * The general contract of the method <code>run</code> is that it may
+     * take any action whatsoever.
+     *
+     * @see Thread#run()
+     */
+    @Override
+    public void run() {
+        List<String> ukList = new LinkedList<>();
+        while (isRun) {
+            try {
+                ukList = fansDao.getUkList(FansDao.COLUMN_FANS_CRAW);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            for (String s : ukList) {
+                getFans(s);
+            }
+        }
     }
-
 }

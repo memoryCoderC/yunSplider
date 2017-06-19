@@ -1,66 +1,68 @@
-CREATE TABLE FansInfo (
-  fans_uk CHAR (20) PRIMARY KEY,
-  is_craw CHAR (1),
-  album_count INT,
-  avatar_url VARCHAR (30),
-  fans_count INT,
-  fans_uname VARCHAR (20),
-  follow_count INT,
-  follow_time VARCHAR (20),
-  intro VARCHAR (10),
-  is_vip VARCHAR (2),
-  pubshare_count INT,
-  type VARCHAR (2),
-  Suser_type VARCHAR (2)
-)
+/*
+Navicat MySQL Data Transfer
 
-CREATE TABLE FileInfo (
-  category VARCHAR (20),
-  fs_id VARCHAR (20),
-  isdir CHAR (2),
-  md5 VARCHAR (50),
-  path VARCHAR (50),
-  server_filename VARCHAR (20),
-  sign VARCHAR (20),
-  size VARCHAR (20),
-  time_stamp VARCHAR (20)
-)
+Source Server         : MySQLRoot
+Source Server Version : 50173
+Source Host           : 123.206.55.89:3306
+Source Database       : db_yun_splider
 
-  CREATE TABLE FollowInfo (
-  follow_uk CHAR (20) PRIMARY KEY,
-  is_claw CHAR (2),
-  album_count INT,
-  avatar_url VARCHAR (20),
-  fans_count INT,
-  follow_count INT,
-  follow_time VARCHAR (20),
-  follow_uname VARCHAR (20),
-  intro VARCHAR (20),
-  is_vip VARCHAR (20),
-  pubshare_count INT,
-  type VARCHAR (10),
-  user_type VARCHAR (10)
-)
+Target Server Type    : MYSQL
+Target Server Version : 50173
+File Encoding         : 65001
 
-CREATE TABLE ShareInfo (
-  shareid CHAR (20) PRIMARY KEY,
-  title VARCHAR (20),
-  uk CHAR (20),
-  username VARCHAR (20),
-  shorturl VARCHAR (20),
-  data_id VARCHAR (20),
-  avatar_url VARCHAR (20),
-  category VARCHAR (20),
-  clienttype INT,
-  dCnt INT,
-  dir_cnt INT,
-  feed_time VARCHAR (20),
-  feed_type INT,
-  filecount INT,
-  source_id VARCHAR (20),
-  source_uid VARCHAR (20),
-  tCnt INT,
-  third VARCHAR (20),
-  vCnt INT
+Date: 2017-06-19 03:02:48
+*/
 
-)
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for UserInfo
+-- ----------------------------
+DROP TABLE IF EXISTS `UserInfo`;
+CREATE TABLE `UserInfo` (
+  `uk` char(20) NOT NULL,
+  `uname` varchar(50) DEFAULT NULL,
+  `avatar_url` varchar(100) DEFAULT NULL,
+  `album_craw` char(1) DEFAULT NULL,
+  `fans_craw` char(1) DEFAULT NULL,
+  `follow_craw` char(1) DEFAULT NULL,
+  `pubshare_craw` char(1) DEFAULT NULL,
+  `album_count` int(11) DEFAULT NULL,
+  `fans_count` int(11) DEFAULT NULL,
+  `follow_count` int(11) DEFAULT NULL,
+  `pubshare_count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`uk`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+SET FOREIGN_KEY_CHECKS=1;
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : MySQLRoot
+Source Server Version : 50173
+Source Host           : 123.206.55.89:3306
+Source Database       : db_yun_splider
+
+Target Server Type    : MYSQL
+Target Server Version : 50173
+File Encoding         : 65001
+
+Date: 2017-06-19 03:02:33
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for FileInfo
+-- ----------------------------
+DROP TABLE IF EXISTS `FileInfo`;
+CREATE TABLE `FileInfo` (
+  `md5` varchar(50) NOT NULL,
+  `shareid` char(20) DEFAULT NULL,
+  `uk` char(20) DEFAULT NULL,
+  `category` varchar(20) DEFAULT NULL,
+  `path` varchar(50) DEFAULT NULL,
+  `server_filename` varchar(20) DEFAULT NULL,
+  `size` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`md5`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+SET FOREIGN_KEY_CHECKS=1;

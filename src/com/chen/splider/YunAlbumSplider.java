@@ -1,12 +1,12 @@
 package com.chen.splider;
 
+import com.chen.dao.AlbumDao;
 import com.chen.dao.FansDao;
-import com.chen.dao.FollowDao;
-import com.chen.entity.FollowInfo;
+import com.chen.entity.AlbumInfo;
 import com.chen.exception.CanNotConvertJsonToObjException;
 import com.chen.exception.GetReponseObjExceoption;
 import com.chen.exception.NetStateNotOKException;
-import com.chen.parser.FollowParser;
+import com.chen.parser.AlbumParser;
 import com.chen.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,47 +18,49 @@ import java.util.List;
 /**
  * Created by chen on 2017/6/14.
  */
-public class YunFollowSplider implements Runnable {
+public class YunAlbumSplider implements Runnable {
 
     private SpliderCore spliderCore;//核心爬取类
-    private Logger logger = LoggerFactory.getLogger(YunFollowSplider.class);
-    private String followUrl = null;
-    private FollowDao followDao = new FollowDao();
+    private Logger logger = LoggerFactory.getLogger(YunAlbumSplider.class);
+    private String albumUrl = null;
+    private AlbumDao albumDao = new AlbumDao();
     private FansDao fansDao = new FansDao();
     volatile boolean isRun;
 
-    public YunFollowSplider() {
+    public YunAlbumSplider() {
         this(new SpliderCore());
     }
 
-    public YunFollowSplider(String followUrl,boolean isRun) {
-        this(followUrl, new SpliderCore(),isRun);
+    public YunAlbumSplider(String followUrl, boolean isRun) {
+        this(followUrl, new SpliderCore(), isRun);
     }
 
-    public YunFollowSplider(SpliderCore spliderCore) {
-        this(PropertiesUtil.getFollowUrl(), spliderCore,true);
+    public YunAlbumSplider(SpliderCore spliderCore) {
+        this(PropertiesUtil.getAlbumUrl(), spliderCore, true);
     }
-    public YunFollowSplider(SpliderCore spliderCore,boolean isRun) {
-        this(PropertiesUtil.getFollowUrl(), spliderCore,isRun);
+
+    public YunAlbumSplider(SpliderCore spliderCore, boolean isRun) {
+        this(PropertiesUtil.getAlbumUrl(), spliderCore, isRun);
     }
-    public YunFollowSplider(String followUrl, SpliderCore spliderCore,boolean isRun) {
-        this.followUrl = followUrl;
+
+    public YunAlbumSplider(String followUrl, SpliderCore spliderCore, boolean isRun) {
+        this.albumUrl = followUrl;
         this.spliderCore = spliderCore;
         this.isRun = isRun;
     }
 
 
-    public boolean getFollow(String uk) {
+    public boolean getAlbum(String uk) {
         //如果uk已经被爬取就不需要爬取（数据库实现)
 
-        FollowParser paser = new FollowParser();
+        AlbumParser paser = new AlbumParser();
         String resultPage = "";//爬取的结果
         int currentPage = 0;//当前分页
         int totalPage = 0;///总页数
 
         do {
             try {
-                String real_url = String.format(followUrl, uk, currentPage * 24);//构造真实路径
+                String real_url = String.format(albumUrl, uk, currentPage * 24);//构造真实路径
 
                 //开始爬取
                 logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
@@ -71,14 +73,15 @@ public class YunFollowSplider implements Runnable {
                 }
                 //开始解析
                 logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
-                List<FollowInfo> followInfos = paser.parseFollowInfo(resultPage);
+                List<AlbumInfo> followInfos = paser.parseAlbumInfo(resultPage);
                 logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
 
-                for (FollowInfo followInfo : followInfos) {
+                for (AlbumInfo albumInfo : followInfos) {
                     try {
-                        followDao.saveFollow(followInfo);
+                        albumInfo.setUk(uk);
+                        albumDao.saveAlbum(albumInfo);
                     } catch (SQLException e) {
-                        logger.error("存入数据库错误-----uk" + uk + "错误Follow" + followInfo.getFollow_uk());
+                        logger.error("存入数据库错误-----uk" + uk + "错误id" + albumInfo.getAlbum_id());
                         e.printStackTrace();
                     }
                 }
@@ -139,7 +142,7 @@ public class YunFollowSplider implements Runnable {
             }
 
             for (String s : ukList) {
-                getFollow(s);
+                getAlbum(s);
             }
         }
     }

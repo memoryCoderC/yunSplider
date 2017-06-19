@@ -11,12 +11,7 @@ public class FansInfo {
     private String fans_uk;
     private String fans_uname;
     private String follow_count;
-    private String follow_time;
-    private String intro;
-    private String is_vip;
     private String pubshare_count;
-    private String type;
-    private String Suser_type;
 
     public String getAlbum_count() {
         if (album_count == null) {
@@ -84,38 +79,6 @@ public class FansInfo {
         this.follow_count = follow_count;
     }
 
-    public String getFollow_time() {
-        if (follow_time == null) {
-            return "";
-        }
-        return follow_time;
-    }
-
-    public void setFollow_time(String follow_time) {
-        this.follow_time = follow_time;
-    }
-
-    public String getIntro() {
-        if (intro == null) {
-            return "";
-        }
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
-    }
-
-    public String getIs_vip() {
-        if (is_vip == null) {
-            return "0";
-        }
-        return is_vip;
-    }
-
-    public void setIs_vip(String is_vip) {
-        this.is_vip = is_vip;
-    }
 
     public String getPubshare_count() {
         if (pubshare_count == null) {
@@ -128,25 +91,4 @@ public class FansInfo {
         this.pubshare_count = pubshare_count;
     }
 
-    public String getType() {
-        if (type == null) {
-            return "";
-        }
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSuser_type() {
-        if (Suser_type == null) {
-            return "";
-        }
-        return Suser_type;
-    }
-
-    public void setSuser_type(String suser_type) {
-        Suser_type = suser_type;
-    }
 }

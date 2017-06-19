@@ -14,25 +14,25 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class FollowDao {
     public void saveFollow(FollowInfo followInfo) throws SQLException {
-        String sql = "INSERT INTO `FollowInfo` (`follow_uk`, `is_claw`, `album_count`, `avatar_url`, `fans_count`, `follow_count`, `follow_time`, `follow_uname`, `intro`, `is_vip`, `pubshare_count`, `type`, `user_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        Connection connection = DBUtil.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         if (followInfo == null) {
             return;
         }
+        String sql = "INSERT INTO `UserInfo` (`uk`, `uname`, `avatar_url`, `album_craw`, `fans_craw`, `follow_craw`, `pubshare_craw`, `album_count`, `fans_count`, `follow_count`, `pubshare_count`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Connection connection = DBUtil.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setObject(1, followInfo.getFollow_uk());
-        preparedStatement.setObject(2, 0);
-        preparedStatement.setObject(3, followInfo.getAlbum_count());
-        preparedStatement.setObject(4, followInfo.getAvatar_url());
-        preparedStatement.setObject(5, followInfo.getFans_count());
-        preparedStatement.setObject(6, followInfo.getFollow_count());
-        preparedStatement.setObject(7, followInfo.getFollow_time());
-        preparedStatement.setObject(8, followInfo.getFollow_uname());
-        preparedStatement.setObject(9, followInfo.getIntro());
-        preparedStatement.setObject(10, followInfo.getIs_vip());
+        preparedStatement.setObject(2, followInfo.getFollow_uname());
+        preparedStatement.setObject(3, followInfo.getAvatar_url());
+        preparedStatement.setObject(4, "0");
+        preparedStatement.setObject(5, "0");
+        preparedStatement.setObject(6, "0");
+        preparedStatement.setObject(7, "0");
+        preparedStatement.setObject(8, followInfo.getAlbum_count());
+        preparedStatement.setObject(9, followInfo.getFans_count());
+        preparedStatement.setObject(10, followInfo.getFollow_count());
         preparedStatement.setObject(11, followInfo.getPubshare_count());
-        preparedStatement.setObject(12, followInfo.getType());
-        preparedStatement.setObject(13, followInfo.getUser_type());
+
+
         try {
             int i = preparedStatement.executeUpdate();
         } finally {

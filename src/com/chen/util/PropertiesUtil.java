@@ -15,7 +15,9 @@ public class PropertiesUtil {
     public static String getFansUrl() {
         return bundle.getString("fansUrl");
     }
-
+    public static String getAlbumUrl() {
+        return bundle.getString("albumUrl");
+    }
     public static String getShareUrl() {
         return bundle.getString("shareUrl");
     }
