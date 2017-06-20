@@ -31,17 +31,19 @@ public class YunFollowSplider implements Runnable {
         this(new SpliderCore());
     }
 
-    public YunFollowSplider(String followUrl,boolean isRun) {
-        this(followUrl, new SpliderCore(),isRun);
+    public YunFollowSplider(String followUrl, boolean isRun) {
+        this(followUrl, new SpliderCore(), isRun);
     }
 
     public YunFollowSplider(SpliderCore spliderCore) {
-        this(PropertiesUtil.getFollowUrl(), spliderCore,true);
+        this(PropertiesUtil.getFollowUrl(), spliderCore, true);
     }
-    public YunFollowSplider(SpliderCore spliderCore,boolean isRun) {
-        this(PropertiesUtil.getFollowUrl(), spliderCore,isRun);
+
+    public YunFollowSplider(SpliderCore spliderCore, boolean isRun) {
+        this(PropertiesUtil.getFollowUrl(), spliderCore, isRun);
     }
-    public YunFollowSplider(String followUrl, SpliderCore spliderCore,boolean isRun) {
+
+    public YunFollowSplider(String followUrl, SpliderCore spliderCore, boolean isRun) {
         this.followUrl = followUrl;
         this.spliderCore = spliderCore;
         this.isRun = isRun;
@@ -100,7 +102,7 @@ public class YunFollowSplider implements Runnable {
 
             currentPage++;
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -134,12 +136,12 @@ public class YunFollowSplider implements Runnable {
         while (isRun) {
             try {
                 ukList = fansDao.getUkList(FansDao.COLUMN_FOLLOW_CRAW);
+                for (String s : ukList) {
+                    fansDao.updateClaw(FansDao.COLUMN_FOLLOW_CRAW, s);
+                    getFollow(s);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
-
-            for (String s : ukList) {
-                getFollow(s);
             }
         }
     }

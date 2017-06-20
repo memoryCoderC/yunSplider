@@ -68,14 +68,12 @@ public class YunShareSplider implements Runnable {
         int currentPage = 0;//当前分页
         int totalPage = 0;///总页数
 
-        //设置爬取头信息
         Map map = new HashMap();
         map.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
         map.put("X-Requested-With", "XMLHttpRequest");
         map.put("Accept", "application/json, text/javascript, */*; q=0.01");
         map.put("Referer", "http://pan.baidu.com/share/home?uk=743889484&view=share");
         map.put("Accept-Language", "zh-CN");
-
         do {
             try {
                 String real_url = String.format(shareUrl, currentPage * 24, uk);//构造真实路径
@@ -125,7 +123,7 @@ public class YunShareSplider implements Runnable {
             }
             logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -168,12 +166,14 @@ public class YunShareSplider implements Runnable {
         while (isRun) {
             try {
                 ukList = fansDao.getUkList(FansDao.COLUMN_PUBSHARE_CRAW);
+                for (String s : ukList) {
+                    fansDao.updateClaw(FansDao.COLUMN_PUBSHARE_CRAW, s);
+                    getShare(s);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            for (String s : ukList) {
-                getShare(s);
-            }
+
         }
     }
 }

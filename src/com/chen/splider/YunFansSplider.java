@@ -106,7 +106,7 @@ public class YunFansSplider implements Runnable {
                 return true;
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -132,11 +132,12 @@ public class YunFansSplider implements Runnable {
         while (isRun) {
             try {
                 ukList = fansDao.getUkList(FansDao.COLUMN_FANS_CRAW);
+                for (String s : ukList) {
+                    fansDao.updateClaw(FansDao.COLUMN_FANS_CRAW, s);
+                    getFans(s);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
-            for (String s : ukList) {
-                getFans(s);
             }
         }
     }

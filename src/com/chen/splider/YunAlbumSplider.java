@@ -12,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chen on 2017/6/14.
@@ -38,7 +40,7 @@ public class YunAlbumSplider implements Runnable {
     public YunAlbumSplider(SpliderCore spliderCore) {
         this(PropertiesUtil.getAlbumUrl(), spliderCore, true);
     }
-
+==
     public YunAlbumSplider(SpliderCore spliderCore, boolean isRun) {
         this(PropertiesUtil.getAlbumUrl(), spliderCore, isRun);
     }
@@ -57,14 +59,20 @@ public class YunAlbumSplider implements Runnable {
         String resultPage = "";//爬取的结果
         int currentPage = 0;//当前分页
         int totalPage = 0;///总页数
-
+        //设置爬取头信息
+        Map map = new HashMap();
+        map.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
+        map.put("X-Requested-With", "XMLHttpRequest");
+        map.put("Accept", "application/json, text/javascript, */*; q=0.01");
+        map.put("Referer", "http://pan.baidu.com/share/home?uk=743889484&view=album");
+        map.put("Accept-Language", "zh-CN");
         do {
             try {
-                String real_url = String.format(albumUrl, uk, currentPage * 24);//构造真实路径
+                String real_url = String.format(albumUrl, currentPage * 24,uk);//构造真实路径
 
                 //开始爬取
                 logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
-                resultPage = spliderCore.doGet(real_url);
+                resultPage = spliderCore.doGet(real_url, map);
                 logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
 
                 //为空不需要解析
@@ -103,7 +111,7 @@ public class YunAlbumSplider implements Runnable {
 
             currentPage++;
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -136,13 +144,13 @@ public class YunAlbumSplider implements Runnable {
 
         while (isRun) {
             try {
-                ukList = fansDao.getUkList(FansDao.COLUMN_FOLLOW_CRAW);
+                ukList = fansDao.getUkList(FansDao.COLUMN_ALBUM_CRAW);
+                for (String s : ukList) {
+                    fansDao.updateClaw(FansDao.COLUMN_ALBUM_CRAW, s);
+                    getAlbum(s);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
-
-            for (String s : ukList) {
-                getAlbum(s);
             }
         }
     }

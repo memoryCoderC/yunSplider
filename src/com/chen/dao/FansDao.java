@@ -50,7 +50,7 @@ public class FansDao {
     }
 
     public void updateClaw(String column, String uk) throws SQLException {
-        String sql = "UPDATE FansInfo SET " + column + "=1 WHERE (`uk`=?) LIMIT 1";
+        String sql = "UPDATE UserInfo SET " + column + "=1 WHERE (`uk`=?) LIMIT 1";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setObject(1, uk);
@@ -62,7 +62,7 @@ public class FansDao {
     }
 
     public List<String> getUkList(String column) throws SQLException {
-        String sql = "SELECT fans_uk FROM FansInfo WHERE " + column + " = 0 LIMIT 0, 30";
+        String sql = "SELECT uk FROM UserInfo WHERE " + column + " = 0 LIMIT 0, 30";
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = null;
         List<String> ukList = new ArrayList<String>();
