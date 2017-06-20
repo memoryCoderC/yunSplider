@@ -63,10 +63,23 @@ public class YunFansSplider implements Runnable {
         do {
             try {
                 String real_url = String.format(fansUrl, uk, currentPage * 24);//构造真实路径
-                //开始爬取
-                logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
-                resultPage = spliderCore.doGet(real_url);
-                logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
+
+
+                while (true) {
+                    //开始爬取
+                    logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
+                    resultPage = spliderCore.doGet(real_url);
+                    logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
+                    if (!resultPage.startsWith("{\"errno\":-55")) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
                 //为空不需要解析
                 if (resultPage == null || resultPage.equals("")) {
@@ -103,7 +116,7 @@ public class YunFansSplider implements Runnable {
             } catch (CanNotConvertJsonToObjException e) {
                 e.printStackTrace();
                 logger.error(e.toString());
-                return true;
+                return false;
             }
             try {
                 Thread.sleep(3000);
@@ -133,8 +146,8 @@ public class YunFansSplider implements Runnable {
             try {
                 ukList = fansDao.getUkList(FansDao.COLUMN_FANS_CRAW);
                 for (String s : ukList) {
-                    fansDao.updateClaw(FansDao.COLUMN_FANS_CRAW, s);
-                    getFans(s);
+                    if (getFans(s))
+                        fansDao.updateClaw(FansDao.COLUMN_FANS_CRAW, s);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

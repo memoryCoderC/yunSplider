@@ -77,11 +77,21 @@ public class YunShareSplider implements Runnable {
         do {
             try {
                 String real_url = String.format(shareUrl, currentPage * 24, uk);//构造真实路径
+                while (true) {
+                    //开始爬取
+                    logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
+                    resultPage = spliderCore.doGet(real_url, map);
+                    logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
+                    if (!resultPage.startsWith("{\"errno\":-55")) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                //开始爬取
-                logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
-                resultPage = spliderCore.doGet(real_url, map);
-                logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
 
                 //为空不需要解析
                 if (resultPage == null || resultPage.equals("")) {
@@ -101,12 +111,12 @@ public class YunShareSplider implements Runnable {
             SharePaser paser = new SharePaser();
             logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
             try {
-                totalPage = paser.getTotalCount(resultPage);
+                totalPage = paser.getTotalCount(resultPage) / 24;
                 shareInfos = paser.parseShareInfo(resultPage);
             } catch (CanNotConvertJsonToObjException e) {
                 logger.error(e.toString());
                 e.printStackTrace();
-                return true;
+                return false;
             }
 
             for (ShareInfo shareInfo : shareInfos) {
@@ -167,8 +177,8 @@ public class YunShareSplider implements Runnable {
             try {
                 ukList = fansDao.getUkList(FansDao.COLUMN_PUBSHARE_CRAW);
                 for (String s : ukList) {
-                    fansDao.updateClaw(FansDao.COLUMN_PUBSHARE_CRAW, s);
-                    getShare(s);
+                    if (getShare(s))
+                        fansDao.updateClaw(FansDao.COLUMN_PUBSHARE_CRAW, s);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

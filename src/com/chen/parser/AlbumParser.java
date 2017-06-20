@@ -28,7 +28,7 @@ public class AlbumParser {
         //4、把把数组转成列表
         List<AlbumInfo> fansInfoLit = null;
         try {
-            fansInfoLit = JSONArray.toList(jsonArray, AlbumParser.class);
+            fansInfoLit = JSONArray.toList(jsonArray, AlbumInfo.class);
         } catch (Exception e) {
             e.printStackTrace();
             throw new CanNotConvertJsonToObjException(AlbumParser.class.getName());

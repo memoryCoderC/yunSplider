@@ -40,7 +40,7 @@ public class YunAlbumSplider implements Runnable {
     public YunAlbumSplider(SpliderCore spliderCore) {
         this(PropertiesUtil.getAlbumUrl(), spliderCore, true);
     }
-==
+
     public YunAlbumSplider(SpliderCore spliderCore, boolean isRun) {
         this(PropertiesUtil.getAlbumUrl(), spliderCore, isRun);
     }
@@ -68,12 +68,22 @@ public class YunAlbumSplider implements Runnable {
         map.put("Accept-Language", "zh-CN");
         do {
             try {
-                String real_url = String.format(albumUrl, currentPage * 24,uk);//构造真实路径
+                String real_url = String.format(albumUrl, currentPage * 24, uk);//构造真实路径
+                while (true) {
+                    //开始爬取
+                    logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
+                    resultPage = spliderCore.doGet(real_url, map);
+                    logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
 
-                //开始爬取
-                logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
-                resultPage = spliderCore.doGet(real_url, map);
-                logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
+                    if (!resultPage.startsWith("{\"errno\":-55")) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 //为空不需要解析
                 if (resultPage == null || resultPage.equals("")) {
@@ -106,7 +116,7 @@ public class YunAlbumSplider implements Runnable {
             } catch (CanNotConvertJsonToObjException e) {
                 e.printStackTrace();
                 logger.error(e.toString());
-                return true;
+                return false;
             }
 
             currentPage++;
@@ -146,8 +156,8 @@ public class YunAlbumSplider implements Runnable {
             try {
                 ukList = fansDao.getUkList(FansDao.COLUMN_ALBUM_CRAW);
                 for (String s : ukList) {
-                    fansDao.updateClaw(FansDao.COLUMN_ALBUM_CRAW, s);
-                    getAlbum(s);
+                    if (getAlbum(s))
+                        fansDao.updateClaw(FansDao.COLUMN_ALBUM_CRAW, s);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
