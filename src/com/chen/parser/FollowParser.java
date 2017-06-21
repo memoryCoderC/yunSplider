@@ -34,6 +34,7 @@ public class FollowParser {
             e.printStackTrace();
             throw new CanNotConvertJsonToObjException(FollowInfo.class.getName());
         }
+
         return followInfoList;
     }
 
