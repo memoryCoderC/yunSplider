@@ -116,7 +116,6 @@ public class YunFansSplider implements Runnable {
             } catch (CanNotConvertJsonToObjException e) {
                 e.printStackTrace();
                 logger.error(e.toString());
-                return false;
             }
             try {
                 Thread.sleep(3000);

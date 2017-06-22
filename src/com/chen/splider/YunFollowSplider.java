@@ -107,7 +107,6 @@ public class YunFollowSplider implements Runnable {
             } catch (CanNotConvertJsonToObjException e) {
                 e.printStackTrace();
                 logger.error(e.toString());
-                return false;
             }
 
             currentPage++;

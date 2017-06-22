@@ -1,5 +1,7 @@
 package com.chen.entity;
 
+import java.util.List;
+
 /**
  * Created by chen on 2017/6/15.
  * 文件分析信息
@@ -25,13 +27,13 @@ public class ShareInfo {
     private String uk;
     private String username;
     private String vCnt;
-    private FileInfo[] filelist;
+    private List<FileInfo> filelist;
 
-    public FileInfo[] getFilelist() {
+    public List<FileInfo> getFilelist() {
         return filelist;
     }
 
-    public void setFilelist(FileInfo[] filelist) {
+    public void setFilelist(List<FileInfo> filelist) {
         this.filelist = filelist;
     }
 

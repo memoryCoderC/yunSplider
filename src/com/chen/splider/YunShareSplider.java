@@ -107,7 +107,7 @@ public class YunShareSplider implements Runnable {
                 e.printStackTrace();
                 return false;
             }
-            List<ShareInfo> shareInfos;
+            List<ShareInfo> shareInfos = null;
             SharePaser paser = new SharePaser();
             logger.info("解析开始-----uk" + uk + "start:" + currentPage * 24);
             try {
@@ -116,7 +116,6 @@ public class YunShareSplider implements Runnable {
             } catch (CanNotConvertJsonToObjException e) {
                 logger.error(e.toString());
                 e.printStackTrace();
-                return false;
             }
 
             for (ShareInfo shareInfo : shareInfos) {

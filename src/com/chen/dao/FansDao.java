@@ -66,15 +66,16 @@ public class FansDao {
         Connection connection = DBUtil.getConnection();
         PreparedStatement preparedStatement = null;
         List<String> ukList = new ArrayList<String>();
+        ResultSet resultSet = null;
         try {
             preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 ukList.add(resultSet.getString(1));
             }
         } finally {
-            DBUtil.close(connection, preparedStatement, null);
+            DBUtil.close(connection, preparedStatement, resultSet);
         }
         return ukList;
     }
