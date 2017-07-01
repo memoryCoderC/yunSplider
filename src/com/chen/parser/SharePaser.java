@@ -35,6 +35,7 @@ public class SharePaser {
 
             } else {
                 ShareInfo shareInfo = new ShareInfo();
+                shareInfo.setUk(jsonObject1.get("uk").toString());
                 shareInfo.setShareid(jsonObject1.get("shareid").toString());
                 JSONArray filelist = jsonObject1.optJSONArray("filelist");
                 List<FileInfo> list = JSONArray.toList(filelist, FileInfo.class);

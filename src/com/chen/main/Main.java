@@ -1,9 +1,6 @@
 package com.chen.main;
 
-import com.chen.splider.SpliderCore;
-import com.chen.splider.YunAlbumSplider;
-import com.chen.splider.YunFollowSplider;
-import com.chen.splider.YunShareSplider;
+import com.chen.splider.*;
 
 /**
  * Created by chen on 2017/6/14.

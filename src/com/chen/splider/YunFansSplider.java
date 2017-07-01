@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chen on 2017/6/14.
@@ -63,14 +65,19 @@ public class YunFansSplider implements Runnable {
         do {
             try {
                 String real_url = String.format(fansUrl, uk, currentPage * 24);//构造真实路径
-
+                Map map = new HashMap();
+                map.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36");
+                map.put("X-Requested-With", "XMLHttpRequest");
+                map.put("Accept", "application/json, text/javascript, */*; q=0.01");
+                map.put("Referer", "https://yun.baidu.com/share/home?uk=23432432#category/type=0");
+                map.put("Accept-Language", "zh-CN");
 
                 while (true) {
                     //开始爬取
                     logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
-                    resultPage = spliderCore.doGet(real_url);
+                    resultPage = spliderCore.doGet(real_url, map);
                     logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
-                    if (!resultPage.startsWith("{\"errno\":-55")) {
+                    if (!resultPage.startsWith("{\"errno\":-55")) {//如果检测到过快的错误就休息一会儿重试
                         break;
                     }
                     try {
