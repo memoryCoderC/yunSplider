@@ -95,13 +95,16 @@ public class YunAlbumSplider implements Runnable {
                 logger.info("解析结束-----uk" + uk + "start:" + currentPage * 24);
 
                 for (AlbumInfo albumInfo : followInfos) {
-                    try {
-                        albumInfo.setUk(uk);
-                        albumDao.saveAlbum(albumInfo);
-                    } catch (SQLException e) {
-                        logger.error("存入数据库错误-----uk" + uk + "错误id" + albumInfo.getAlbum_id());
-                        e.printStackTrace();
+                    if (albumInfo != null) {
+                        try {
+                            albumInfo.setUk(uk);
+                            albumDao.saveAlbum(albumInfo);
+                        } catch (SQLException e) {
+                            logger.error("存入数据库错误-----uk" + uk + "错误id" + albumInfo.getAlbum_id());
+                            e.printStackTrace();
+                        }
                     }
+
                 }
                 totalPage = paser.getTotalCount(resultPage) / 24;//获取总页数
 

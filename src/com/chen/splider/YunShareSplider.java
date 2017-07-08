@@ -82,7 +82,8 @@ public class YunShareSplider implements Runnable {
                     logger.info("爬取开始-----uk" + uk + "start:" + currentPage * 24);
                     resultPage = spliderCore.doGet(real_url, map);
                     logger.info("爬取结束-----uk" + uk + "start:" + currentPage * 24);
-                    if (!resultPage.startsWith("{\"errno\":-55")) {//如果检测到过快的错误就休息一会儿重试
+                    if (!resultPage.startsWith("{\"errno\":-55")) {
+                        spliderCore = new SpliderCore();
                         break;
                     }
                     try {
